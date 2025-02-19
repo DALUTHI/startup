@@ -1,18 +1,25 @@
 import React, { useState } from "react";
-import { Tabs, Tab, Typography, Grid, Card, CardContent, Button } from "@mui/material";
+import { Tabs, Tab, Typography, Grid, Card, CardContent, Button, Box, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
 
 // Importação manual das imagens
 import pizza from "./png/pizza.jpeg";
 import hamburguer from "./png/hamburguer.jpeg";
 import fritas from "./png/fritas.jpeg";
 
-
 // Mapeamento dos itens com suas imagens correspondentes
 const imagensItens = {
   "Pizza de Calabresa": pizza,
   "Hambúrguer Artesanal": hamburguer,
   "Batata Frita": fritas,
-  
+};
+
+const detalhesItens = {
+  "Pizza de Calabresa": "Deliciosa pizza de calabresa com queijo derretido e molho especial.",
+  "Hambúrguer Artesanal": "Hambúrguer artesanal feito com carne selecionada, queijo e molhos especiais.",
+  "Batata Frita": "Porção de batatas fritas crocantes e bem temperadas.",
+  "Refrigerante": "Refrigerante gelado de diversos sabores.",
+  "Suco Natural": "Suco natural feito com frutas frescas.",
+  "Água Mineral": "Água mineral natural e refrescante.",
 };
 
 const cardapioItens = {
@@ -30,6 +37,18 @@ const cardapioItens = {
 
 const Cardapio = ({ adicionarAoCarrinho }) => {
   const [categoriaSelecionada, setCategoriaSelecionada] = useState("Comidas");
+  const [detalhesAberto, setDetalhesAberto] = useState(false);
+  const [itemSelecionado, setItemSelecionado] = useState(null);
+
+  const abrirDetalhes = (item) => {
+    setItemSelecionado(item);
+    setDetalhesAberto(true);
+  };
+
+  const fecharDetalhes = () => {
+    setDetalhesAberto(false);
+    setItemSelecionado(null);
+  };
 
   return (
     <div>
@@ -57,32 +76,58 @@ const Cardapio = ({ adicionarAoCarrinho }) => {
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 color: "#FFFFFF",
-                height: 150, // 🔥 Altura fixa para todos os cards
+                height: 180,
+                position: "relative",
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "flex-end", // 🔥 Garante que o conteúdo fique na parte de baixo
+                justifyContent: "flex-end",
+                overflow: "hidden",
               }}
             >
-              <CardContent sx={{ backgroundColor: "rgba(0, 0, 0, 0)", borderRadius: "16px" }}>
-                <Typography variant="h6" color="text.primary">
+              {/* Nome e Preço sobre a imagem */}
+              <Box
+                sx={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  backgroundColor: "rgba(0, 0, 0, 0.5)",
+                  padding: "8px",
+                  boxShadow: "0px 20px 17px rgba(0, 0, 0, 0.5)",
+                }}
+              >
+                <Typography variant="h6" color="white" align="center">
                   {item.nome}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body2" color="white" align="center">
                   {item.preco}
                 </Typography>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  sx={{ marginTop: 1 }}
-                  onClick={() => adicionarAoCarrinho(item)}
-                >
+              </Box>
+
+              {/* Botões na parte inferior */}
+              <CardContent sx={{ display: "flex", flexDirection: "column", alignItems: "center", paddingBottom: "8px !important" }}>
+                <Button variant="contained" color="secondary" sx={{ mt: 1, height: 30, fontSize: "0.8rem" }} onClick={() => adicionarAoCarrinho(item)}>
                   Adicionar ao Pedido
+                </Button>
+                <Button variant="contained" color="secondary" sx={{ mt: 1, height: 20, fontSize: "0.8rem" ,  width: "70%"}} onClick={() => abrirDetalhes(item)}>
+                  Detalhes
                 </Button>
               </CardContent>
             </Card>
           </Grid>
         ))}
       </Grid>
+
+      {/* Modal de detalhes do pedido */}
+      <Dialog open={detalhesAberto} onClose={fecharDetalhes}>
+        <DialogTitle>{itemSelecionado?.nome}</DialogTitle>
+        <DialogContent>
+          <Typography>{detalhesItens[itemSelecionado?.nome]}</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={fecharDetalhes} color="primary">Fechar</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
