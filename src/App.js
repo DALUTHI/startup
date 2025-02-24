@@ -51,7 +51,7 @@ function App() {
               fontFamily: 'Poppins, sans-serif',
               fontSize: '35px',
               fontWeight: 'bold',
-              color: '#333',
+              color: '#white',
               textShadow: '2px 2px 5px rgba(0, 0, 0, 0.3)'
             }}
           >
@@ -63,7 +63,7 @@ function App() {
             sx={{
               fontFamily: 'Poppins, sans-serif',
               fontSize: '17px',
-              color: '#555',
+              color: '#white',
               textShadow: '1px 1px 3px rgba(0, 0, 0, 0.2)'
             }}
           >
@@ -81,7 +81,7 @@ function App() {
               fontFamily: 'Poppins, sans-serif',
               fontSize: '22px',
               fontWeight: '600',
-              color: '#222',
+              color: '#white',
               textShadow: '2px 2px 4px rgba(0, 0, 0, 0.2)'
             }}
           >
@@ -102,7 +102,7 @@ function App() {
                   />
                   <Button
                     variant="outlined"
-                    color="secondary"
+                    color="white"
                     onClick={() => removerDoCarrinho(index)}
                   >
                     Remover
