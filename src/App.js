@@ -10,7 +10,7 @@ const darkTheme = createTheme({
   palette: {
     mode: "dark",
     primary: { main: "#021E40" },
-    secondary: { main: "#003366" },
+    secondary: { main: "#FFFFFF" },
     background: { default: "#121212", paper: "#1e1e1e" },
     text: { primary: "#FFFFFF", secondary: "#FFFFFF" },
   },
@@ -95,7 +95,7 @@ function App() {
                             primary={`${item.nome} - ${item.preco}`}
                             secondary={item.ingrediente ? `Ingrediente: ${item.ingrediente}` : "Sem alterações"}
                           />
-                          <Button variant="outlined" color="secondary" onClick={() => removerDoCarrinho(index)}>
+                          <Button variant="outlined" color="white" onClick={() => removerDoCarrinho(index)}>
                             Remover
                           </Button>
                         </ListItem>
