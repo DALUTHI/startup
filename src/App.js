@@ -1,23 +1,66 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { CssBaseline, Container, Paper, Typography, Button, List, ListItem, ListItemText, TextField, Snackbar } from "@mui/material";
+import {
+  CssBaseline,
+  Container,
+  Paper,
+  Typography,
+  Button,
+  List,
+  ListItem,
+  ListItemText,
+  TextField,
+  Snackbar,
+  Chip,
+  IconButton,
+  AppBar,
+  Toolbar,
+  Badge,
+} from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Cardapio from "./Cardapio";
-import Cozinha from "./Cozinha"; // Tela da cozinha
+import Cozinha from "./Cozinha";
 import "./App.css";
 
-const darkTheme = createTheme({
+const theme = createTheme({
   palette: {
-    mode: "dark",
-    primary: { main: "#021E40" },
-    secondary: { main: "#003366" },
-    background: { default: "#121212", paper: "#1e1e1e" },
-    text: { primary: "#FFFFFF", secondary: "#FFFFFF" },
+    mode: "light",
+    primary: { main: "#d84315" }, // Laranja vibrante
+    secondary: { main: "#ffb74d" }, // Laranja claro
+    background: { default: "#fff3e0", paper: "#ffe0b2" }, // Tons quentes
+    text: { primary: "#4e342e", secondary: "#6d4c41" },
+    error: { main: "#d32f2f" }, // Vermelho
   },
-  typography: { fontFamily: "Poppins, sans-serif" },
+  typography: {
+    fontFamily: "Poppins, sans-serif",
+    h4: { fontWeight: "bold", textShadow: "1px 1px 2px rgba(0,0,0,0.1)" },
+    h5: { fontWeight: "600", color: "#4e342e" },
+    body1: { color: "#6d4c41" },
+  },
   components: {
-    MuiButton: { styleOverrides: { root: { borderRadius: "12px" } } },
-    MuiPaper: { styleOverrides: { root: { borderRadius: "16px" } } },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: "16px",
+          fontWeight: "bold",
+          transition: "transform 0.2s, box-shadow 0.2s",
+          "&:hover": { transform: "scale(1.05)", boxShadow: "0 4px 15px rgba(0,0,0,0.2)" },
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          borderRadius: "20px",
+          padding: "24px",
+          boxShadow: "0 4px 10px rgba(0,0,0,0.2)",
+          background: "linear-gradient(145deg, #ffe0b2, #fff3e0)",
+        },
+      },
+    },
   },
 });
 
@@ -27,64 +70,102 @@ function App() {
   const [ingrediente, setIngrediente] = useState("");
   const [socket, setSocket] = useState(null);
 
-  // Conectar ao WebSocket ao iniciar
+
   useEffect(() => {
-    const newSocket = new WebSocket("ws://localhost:3001"); // Substitua pela URL correta
+    const newSocket = new WebSocket("ws://localhost:3001");
+
+    newSocket.onopen = () => {
+      console.log("Conexão WebSocket estabelecida com sucesso!");
+    };
+
+    newSocket.onerror = (error) => {
+      console.error("Erro na conexão WebSocket:", error);
+    };
+
+    newSocket.onmessage = (event) => {
+      console.log("Mensagem recebida do servidor:", event.data);
+    };
+
     setSocket(newSocket);
+
     return () => newSocket.close();
   }, []);
 
-  // Adicionar item ao carrinho
   const adicionarAoCarrinho = (item) => {
     setCarrinho((prevCarrinho) => [...prevCarrinho, { ...item, ingrediente }]);
-    setIngrediente(""); // Limpar campo de ingrediente
+    setIngrediente("");
   };
 
-  // Remover item do carrinho
   const removerDoCarrinho = (index) => {
     setCarrinho((prevCarrinho) => prevCarrinho.filter((_, i) => i !== index));
   };
 
-  // Finalizar pedido e enviar para a cozinha
   const finalizarPedido = () => {
     if (socket && socket.readyState === WebSocket.OPEN) {
       const pedido = {
-        
         itens: carrinho.map((item) => ({
           nome: item.nome,
           preco: item.preco,
           ingrediente: item.ingrediente || "Nenhuma alteração",
         })),
+        mesa: 1, // Número da mesa (pode ser dinâmico)
       };
+
+      console.log("Enviando pedido:", pedido);
       socket.send(JSON.stringify(pedido));
-      console.log("Pedido enviado:", pedido);
+      console.log("Pedido enviado com sucesso!");
+    } else {
+      console.error("WebSocket não está conectado.");
     }
+
     setCarrinho([]);
     setPedidoConfirmado(true);
   };
 
   return (
-    <ThemeProvider theme={darkTheme}>
+    <ThemeProvider theme={theme}>
       <CssBaseline />
       <Router>
+        {/* Cabeçalho */}
+        <AppBar position="static" sx={{ background: "#d84315", mb: 4 }}>
+          <Toolbar>
+            <Typography variant="h6" sx={{ flexGrow: 1 }}>
+              Cardápio Online
+            </Typography>
+            <Badge badgeContent={carrinho.length} color="secondary">
+              <ShoppingCartIcon />
+            </Badge>
+          </Toolbar>
+        </AppBar>
+
         <Routes>
           <Route
             path="/"
             element={
-              <Container maxWidth="sm" className="container-background">
-                <Paper elevation={3} sx={{ padding: 3 }}>
-                  <Typography variant="h4" gutterBottom>
-                    Cardápio Online
+              <Container
+                maxWidth="sm"
+                sx={{
+                  padding: "20px",
+                  minHeight: "100vh", // Ocupa toda a altura da tela
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between", // Distribui o espaço entre os elementos
+                  backgroundColor: "#fff3e0", // Cor de fundo bege
+                }}
+              >
+                <Paper elevation={3} sx={{ padding: "24px", flexGrow: 1 }}>
+                  <Typography variant="h4" gutterBottom align="center">
+                    🍴 Cardápio Online
                   </Typography>
-                  <Typography variant="body1" paragraph>
+                  <Typography variant="body1" paragraph align="center">
                     Escolha seu pedido e envie diretamente para a cozinha!
                   </Typography>
                   <Cardapio adicionarAoCarrinho={adicionarAoCarrinho} />
-                  <Typography variant="h5" sx={{ mt: 3 }}>
-                    Carrinho de Compras
+                  <Typography variant="h5" sx={{ mt: 3, textAlign: "center" }}>
+                    🛒 Itens do Pedido
                   </Typography>
                   {carrinho.length === 0 ? (
-                    <Typography variant="body1" color="text.secondary">
+                    <Typography variant="body1" color="text.secondary" align="center">
                       Seu carrinho está vazio.
                     </Typography>
                   ) : (
@@ -93,17 +174,29 @@ function App() {
                         <ListItem key={index}>
                           <ListItemText
                             primary={`${item.nome} - ${item.preco}`}
-                            secondary={item.ingrediente ? `Ingrediente: ${item.ingrediente}` : "Sem alterações"}
+                            secondary={
+                              item.ingrediente && (
+                                <Chip
+                                  label={`Sem ${item.ingrediente}`}
+                                  size="small"
+                                  sx={{ mt: 1, backgroundColor: "#ffcc80" }}
+                                />
+                              )
+                            }
                           />
-                          <Button variant="outlined" color="secondary" onClick={() => removerDoCarrinho(index)}>
-                            Remover
-                          </Button>
+                          <IconButton
+                            color="error"
+                            onClick={() => removerDoCarrinho(index)}
+                            sx={{ "&:hover": { transform: "scale(1.1)" } }}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
                         </ListItem>
                       ))}
                     </List>
                   )}
                   <TextField
-                    label="Quer remover algum ingrediente?"
+                    label="Remover ingrediente? (ex: cebola, tomate)"
                     variant="outlined"
                     fullWidth
                     value={ingrediente}
@@ -113,7 +206,7 @@ function App() {
                   <Button
                     variant="contained"
                     color="primary"
-                    sx={{ mt: 2 }}
+                    sx={{ mt: 2, width: "100%", py: 1.5 }}
                     disabled={carrinho.length === 0}
                     onClick={finalizarPedido}
                   >
@@ -130,7 +223,15 @@ function App() {
         open={pedidoConfirmado}
         autoHideDuration={3000}
         onClose={() => setPedidoConfirmado(false)}
-        message="✅ Pedido enviado para a cozinha!"
+        message={
+          <span>
+            <CheckCircleIcon sx={{ mr: 1, verticalAlign: "middle" }} />
+            Pedido enviado para a cozinha!
+          </span>
+        }
+        sx={{
+          "& .MuiSnackbarContent-root": { backgroundColor: "#4caf50" },
+        }}
       />
     </ThemeProvider>
   );
