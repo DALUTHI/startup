@@ -53,7 +53,7 @@ import smoothie from "./png/smoothie.jpg";
 // Mapeamento dos itens com suas imagens correspondentes
 const imagensItens = {
   "Pizza de Calabresa": pizza,
-  "Hambúrguer Artesanal": hamburguer,
+  "Hambúrguer": hamburguer,
   "Batata Frita": fritas,
   "Lasanha à Bolonhesa": lasanha,
   "Sushi Variado": sushi,
@@ -69,7 +69,7 @@ const imagensItens = {
   "Strogonoff de Carne": strogonoff,
   "Taco Mexicano": taco,
   "Feijoada Completa": feijoada,
-  "Camarão ao Alho e Óleo": camarao,
+  "Camarão ao Alho": camarao,
   "Filé Mignon": fileMignon,
   "Pizza Margherita": pizzaMargherita,
   Caipirinha: caipirinha,
@@ -86,7 +86,7 @@ const imagensItens = {
 // Descrições dos itens
 const detalhesItens = {
   "Pizza de Calabresa": "Deliciosa pizza de calabresa com queijo derretido e molho especial.",
-  "Hambúrguer Artesanal": "Hambúrguer artesanal feito com carne selecionada, queijo e molhos especiais.",
+  "Hambúrguer": "Hambúrguer artesanal feito com carne selecionada, queijo e molhos especiais.",
   "Batata Frita": "Porção de batatas fritas crocantes e bem temperadas.",
   "Lasanha à Bolonhesa": "Lasanha com molho bolonhesa, queijo derretido e massa fresca.",
   "Sushi Variado": "Sushi fresco com peixes selecionados e arroz temperado.",
@@ -102,7 +102,7 @@ const detalhesItens = {
   "Strogonoff de Carne": "Strogonoff de carne com arroz branco e batata palha.",
   "Taco Mexicano": "Taco recheado com carne moída, queijo, alface e molho especial.",
   "Feijoada Completa": "Feijoada completa com arroz, couve, farofa e laranja.",
-  "Camarão ao Alho e Óleo": "Camarão refogado ao alho e óleo, servido com arroz.",
+  "Camarão ao Alho": "Camarão refogado ao alho e óleo, servido com arroz.",
   "Filé Mignon": "Filé mignon grelhado, servido com batatas rústicas.",
   "Pizza Margherita": "Pizza com molho de tomate, mussarela e manjericão fresco.",
   Caipirinha: "Caipirinha tradicional com limão, açúcar e cachaça.",
@@ -120,7 +120,7 @@ const detalhesItens = {
 const cardapioItens = {
   Comidas: [
     { id: 1, nome: "Pizza de Calabresa", preco: "R$ 35,00" },
-    { id: 2, nome: "Hambúrguer Artesanal", preco: "R$ 25,00" },
+    { id: 2, nome: "Hambúrguer", preco: "R$ 25,00" },
     { id: 3, nome: "Batata Frita", preco: "R$ 15,00" },
     { id: 4, nome: "Lasanha à Bolonhesa", preco: "R$ 40,00" },
     { id: 5, nome: "Sushi Variado", preco: "R$ 50,00" },
@@ -131,7 +131,7 @@ const cardapioItens = {
     { id: 15, nome: "Strogonoff de Carne", preco: "R$ 42,00" },
     { id: 16, nome: "Taco Mexicano", preco: "R$ 28,00" },
     { id: 17, nome: "Feijoada Completa", preco: "R$ 55,00" },
-    { id: 18, nome: "Camarão ao Alho e Óleo", preco: "R$ 60,00" },
+    { id: 18, nome: "Camarão ao Alho", preco: "R$ 60,00" },
     { id: 19, nome: "Filé Mignon", preco: "R$ 70,00" },
     { id: 20, nome: "Pizza Margherita", preco: "R$ 32,00" },
   ],
@@ -280,11 +280,11 @@ const Cardapio = ({ adicionarAoCarrinho }) => {
                   startIcon={<AddShoppingCartIcon />}
                   sx={{
                     mt: 1,
-                    height: 40,
-                    fontSize: "0.9rem",
-                    padding: "8px 16px",
+                    height: { xs: 40, md: 35 },
+                    fontSize: { xs: "0.9rem", md: "0.8rem" },
+                    padding: { xs: "8px 16px", md: "6px 12px" },
                     whiteSpace: "nowrap",
-                    minWidth: "150px",
+                    minWidth: { xs: "150px", md: "130px" },
                   }}
                   onClick={() => adicionarAoCarrinho(item)}
                 >
@@ -296,11 +296,11 @@ const Cardapio = ({ adicionarAoCarrinho }) => {
                   startIcon={<InfoIcon />}
                   sx={{
                     mt: 1,
-                    height: 40,
-                    fontSize: "0.9rem",
-                    padding: "8px 16px",
+                    height: { xs: 40, md: 35 },
+                    fontSize: { xs: "0.9rem", md: "0.8rem" },
+                    padding: { xs: "8px 16px", md: "6px 12px" },
                     whiteSpace: "nowrap",
-                    minWidth: "150px",
+                    minWidth: { xs: "150px", md: "130px" },
                   }}
                   onClick={() => abrirDetalhes(item)}
                 >
