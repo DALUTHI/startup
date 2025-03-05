@@ -14,13 +14,9 @@ import {
   Snackbar,
   Chip,
   IconButton,
-  AppBar,
-  Toolbar,
-  Badge,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Cardapio from "./Cardapio";
 import Cozinha from "./Cozinha";
 import "./App.css";
@@ -69,7 +65,6 @@ function App() {
   const [pedidoConfirmado, setPedidoConfirmado] = useState(false);
   const [ingrediente, setIngrediente] = useState("");
   const [socket, setSocket] = useState(null);
-
 
   useEffect(() => {
     const newSocket = new WebSocket("ws://localhost:3001");
@@ -126,18 +121,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Router>
-        {/* Cabeçalho */}
-        <AppBar position="static" sx={{ background: "#d84315", mb: 4 }}>
-          <Toolbar>
-            <Typography variant="h6" sx={{ flexGrow: 1 }}>
-              Cardápio Online
-            </Typography>
-            <Badge badgeContent={carrinho.length} color="secondary">
-              <ShoppingCartIcon />
-            </Badge>
-          </Toolbar>
-        </AppBar>
-
+        {/* Removido o AppBar (header laranja) */}
         <Routes>
           <Route
             path="/"
@@ -146,11 +130,11 @@ function App() {
                 maxWidth="sm"
                 sx={{
                   padding: "20px",
-                  minHeight: "100vh", // Ocupa toda a altura da tela
+                  minHeight: "100vh",
                   display: "flex",
                   flexDirection: "column",
-                  justifyContent: "space-between", // Distribui o espaço entre os elementos
-                  backgroundColor: "#fff3e0", // Cor de fundo bege
+                  justifyContent: "space-between",
+                  backgroundColor: "#fff3e0",
                 }}
               >
                 <Paper elevation={3} sx={{ padding: "24px", flexGrow: 1 }}>
