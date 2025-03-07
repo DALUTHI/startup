@@ -208,11 +208,11 @@ function App() {
         autoHideDuration={3000}
         onClose={() => setPedidoConfirmado(false)}
         message={
-          <span>
-            <CheckCircleIcon sx={{ mr: 1, verticalAlign: "middle" }} />
-            Pedido enviado para a cozinha!
-          </span>
-        }
+        <Typography variant="body1" sx={{ color: "#000" }}> 
+          <CheckCircleIcon sx={{ mr: 1, verticalAlign: "middle" }} />
+           Pedido enviado para a cozinha!
+        </Typography>
+      }
         sx={{
           "& .MuiSnackbarContent-root": { backgroundColor: "#4caf50" },
         }}
