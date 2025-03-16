@@ -172,8 +172,20 @@ function App() {
                     fullWidth
                     value={ingrediente}
                     onChange={(e) => setIngrediente(e.target.value)}
-                    sx={{ mt: 2, backgroundColor: "#333", borderRadius: "8px" }}
-                    InputProps={{ style: { color: "#E0E0E0" } }}
+                    sx={{
+                      mt: 2,
+                      backgroundColor: "#2C2C2C",
+                      borderRadius: "8px",
+                      "& .MuiOutlinedInput-root": {
+                        "& fieldset": { borderColor: "#757575" },
+                        "&:hover fieldset": { borderColor: "#BDBDBD" },
+                        "&.Mui-focused fieldset": { borderColor: "#E0E0E0" },
+                      },
+                      "& .MuiInputLabel-root": { color: "#BDBDBD" },
+                      "& .MuiInputLabel-root.Mui-focused": { color: "#E0E0E0" },
+                      input: { color: "#E0E0E0" },
+                    }}
+                  
                   />
 <Button variant="contained" sx={{ mt: 2, width: "100%", py: 1.5 }} disabled={carrinho.length === 0} onClick={finalizarPedido}>
                     Confirmar Pedido
