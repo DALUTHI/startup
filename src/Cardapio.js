@@ -31,36 +31,11 @@ import suco from "./png/suco.jpg";
 import agua from "./png/agua.jpg";
 import cerveja from "./png/cerveja.jpg";
 import vinho from "./png/vinho.png";
-<<<<<<< HEAD
-=======
-import frangoGrelhado from "./png/frango.jpeg";
-import risotoCogumelos from "./png/risoto.png"; 
-import macarraoCarbonara from "./png/carbonara.jpg"; 
-import strogonoff from "./png/strogonoff.jpg";
-import taco from "./png/tacos.jpg";
-import feijoada from "./png/feijoada.jpg"; 
-import camarao from "./png/camarao.jpg";
-import fileMignon from "./png/filemignon.jpg";
-import pizzaMargherita from "./png/margherita.jpg";
-import caipirinha from "./png/caipirinha.jpg";
-import mojito from "./png/mojito.jpg";
-import chaGelado from "./png/cha.jpg";
-import cafeExpresso from "./png/expresso.jpg"; 
-import milkshake from "./png/milkshake.jpg";
-import aguaComGas from "./png/aguacomgas.jpg";
-import energetico from "./png/energetico.jpg";
-import coquetel from "./png/coquetel.jpg";
-import smoothie from "./png/smoothie.jpg";
->>>>>>> origin/main
 
 // Mapeamento dos itens com suas imagens correspondentes
 const imagensItens = {
   "Pizza de Calabresa": pizza,
-<<<<<<< HEAD
   "Hambúrguer Artesanal": hamburguer,
-=======
-  "Hambúrguer": hamburguer,
->>>>>>> origin/main
   "Batata Frita": fritas,
   "Lasanha à Bolonhesa": lasanha,
   "Sushi Variado": sushi,
@@ -70,37 +45,12 @@ const imagensItens = {
   "Água Mineral": agua,
   "Cerveja Artesanal": cerveja,
   "Vinho Tinto": vinho,
-<<<<<<< HEAD
-=======
-  "Frango Grelhado": frangoGrelhado,
-  "Risoto de Cogumelos": risotoCogumelos,
-  "Macarrão Carbonara": macarraoCarbonara,
-  "Strogonoff de Carne": strogonoff,
-  "Taco Mexicano": taco,
-  "Feijoada Completa": feijoada,
-  "Camarão ao Alho": camarao,
-  "Filé Mignon": fileMignon,
-  "Pizza Margherita": pizzaMargherita,
-  Caipirinha: caipirinha,
-  Mojito: mojito,
-  "Chá Gelado": chaGelado,
-  "Café Expresso": cafeExpresso,
-  Milkshake: milkshake,
-  "Água com Gás": aguaComGas,
-  Energético: energetico,
-  "Coquetel Sem Álcool": coquetel,
-  "Smoothie de Frutas": smoothie,
->>>>>>> origin/main
 };
 
 // Descrições dos itens
 const detalhesItens = {
   "Pizza de Calabresa": "Deliciosa pizza de calabresa com queijo derretido e molho especial.",
-<<<<<<< HEAD
   "Hambúrguer Artesanal": "Hambúrguer artesanal feito com carne selecionada, queijo e molhos especiais.",
-=======
-  "Hambúrguer": "Hambúrguer artesanal feito com carne selecionada, queijo e molhos especiais.",
->>>>>>> origin/main
   "Batata Frita": "Porção de batatas fritas crocantes e bem temperadas.",
   "Lasanha à Bolonhesa": "Lasanha com molho bolonhesa, queijo derretido e massa fresca.",
   "Sushi Variado": "Sushi fresco com peixes selecionados e arroz temperado.",
@@ -110,54 +60,17 @@ const detalhesItens = {
   "Água Mineral": "Água mineral natural e refrescante.",
   "Cerveja Artesanal": "Cerveja artesanal com sabor único e refrescante.",
   "Vinho Tinto": "Vinho tinto seco, perfeito para acompanhar carnes e queijos.",
-<<<<<<< HEAD
-=======
-  "Frango Grelhado": "Frango grelhado suculento, servido com legumes frescos.",
-  "Risoto de Cogumelos": "Risoto cremoso com cogumelos frescos e queijo parmesão.",
-  "Macarrão Carbonara": "Macarrão com molho carbonara cremoso e bacon crocante.",
-  "Strogonoff de Carne": "Strogonoff de carne com arroz branco e batata palha.",
-  "Taco Mexicano": "Taco recheado com carne moída, queijo, alface e molho especial.",
-  "Feijoada Completa": "Feijoada completa com arroz, couve, farofa e laranja.",
-  "Camarão ao Alho": "Camarão refogado ao alho e óleo, servido com arroz.",
-  "Filé Mignon": "Filé mignon grelhado, servido com batatas rústicas.",
-  "Pizza Margherita": "Pizza com molho de tomate, mussarela e manjericão fresco.",
-  Caipirinha: "Caipirinha tradicional com limão, açúcar e cachaça.",
-  Mojito: "Mojito refrescante com limão, hortelã e rum.",
-  "Chá Gelado": "Chá gelado com sabor de pêssego.",
-  "Café Expresso": "Café expresso forte e encorpado.",
-  Milkshake: "Milkshake cremoso de chocolate, morango ou baunilha.",
-  "Água com Gás": "Água mineral com gás e limão.",
-  Energético: "Energético para dar aquela disposição extra.",
-  "Coquetel Sem Álcool": "Coquetel refrescante sem álcool, perfeito para todos.",
-  "Smoothie de Frutas": "Smoothie cremoso feito com frutas frescas.",
->>>>>>> origin/main
 };
 
 // Itens do cardápio
 const cardapioItens = {
   Comidas: [
     { id: 1, nome: "Pizza de Calabresa", preco: "R$ 35,00" },
-<<<<<<< HEAD
     { id: 2, nome: "Hambúrguer Artesanal", preco: "R$ 25,00" },
-=======
-    { id: 2, nome: "Hambúrguer", preco: "R$ 25,00" },
->>>>>>> origin/main
     { id: 3, nome: "Batata Frita", preco: "R$ 15,00" },
     { id: 4, nome: "Lasanha à Bolonhesa", preco: "R$ 40,00" },
     { id: 5, nome: "Sushi Variado", preco: "R$ 50,00" },
     { id: 6, nome: "Salada Caesar", preco: "R$ 20,00" },
-<<<<<<< HEAD
-=======
-    { id: 12, nome: "Frango Grelhado", preco: "R$ 30,00" },
-    { id: 13, nome: "Risoto de Cogumelos", preco: "R$ 45,00" },
-    { id: 14, nome: "Macarrão Carbonara", preco: "R$ 38,00" },
-    { id: 15, nome: "Strogonoff de Carne", preco: "R$ 42,00" },
-    { id: 16, nome: "Taco Mexicano", preco: "R$ 28,00" },
-    { id: 17, nome: "Feijoada Completa", preco: "R$ 55,00" },
-    { id: 18, nome: "Camarão ao Alho", preco: "R$ 60,00" },
-    { id: 19, nome: "Filé Mignon", preco: "R$ 70,00" },
-    { id: 20, nome: "Pizza Margherita", preco: "R$ 32,00" },
->>>>>>> origin/main
   ],
   Bebidas: [
     { id: 7, nome: "Refrigerante", preco: "R$ 7,00" },
@@ -165,18 +78,6 @@ const cardapioItens = {
     { id: 9, nome: "Água Mineral", preco: "R$ 5,00" },
     { id: 10, nome: "Cerveja Artesanal", preco: "R$ 15,00" },
     { id: 11, nome: "Vinho Tinto", preco: "R$ 30,00" },
-<<<<<<< HEAD
-=======
-    { id: 21, nome: "Caipirinha", preco: "R$ 18,00" },
-    { id: 22, nome: "Mojito", preco: "R$ 20,00" },
-    { id: 23, nome: "Chá Gelado", preco: "R$ 12,00" },
-    { id: 24, nome: "Café Expresso", preco: "R$ 8,00" },
-    { id: 25, nome: "Milkshake", preco: "R$ 22,00" },
-    { id: 26, nome: "Água com Gás", preco: "R$ 6,00" },
-    { id: 27, nome: "Energético", preco: "R$ 14,00" },
-    { id: 28, nome: "Coquetel Sem Álcool", preco: "R$ 16,00" },
-    { id: 29, nome: "Smoothie de Frutas", preco: "R$ 24,00" },
->>>>>>> origin/main
   ],
 };
 
