@@ -1,7 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
-  Tabs,
-  Tab,
   Typography,
   Grid,
   Card,
@@ -19,6 +17,8 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 // Importação manual das imagens
 import pizza from "./png/pizza.jpeg";
@@ -144,13 +144,130 @@ const cardapioItens = {
 };
 
 const Cardapio = ({ adicionarAoCarrinho }) => {
-  const [categoriaSelecionada, setCategoriaSelecionada] = useState("Entradas");
+  const categorias = Object.keys(cardapioItens);
+  const [categoriaSelecionada, setCategoriaSelecionada] = useState(categorias[0]);
   const [detalhesAberto, setDetalhesAberto] = useState(false);
   const [itemSelecionado, setItemSelecionado] = useState(null);
   const [termoPesquisa, setTermoPesquisa] = useState("");
   const [quantidade, setQuantidade] = useState(1);
   const [adicionais, setAdicionais] = useState({});
   const [precoTotal, setPrecoTotal] = useState(0);
+  
+  // Referências e estados para o carrossel
+  const carouselRef = useRef(null);
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const [showLeftArrow, setShowLeftArrow] = useState(false);
+  const [showRightArrow, setShowRightArrow] = useState(true);
+
+  // Verificar se deve mostrar as setas baseado na posição de scroll
+  useEffect(() => {
+    if (carouselRef.current) {
+      const element = carouselRef.current;
+      setShowLeftArrow(element.scrollLeft > 0);
+      setShowRightArrow(
+        element.scrollLeft < element.scrollWidth - element.clientWidth - 10
+      );
+    }
+  }, [scrollPosition]);
+
+  // Função para lidar com o scroll do carrossel
+  const handleCarouselScroll = () => {
+    if (carouselRef.current) {
+      setScrollPosition(carouselRef.current.scrollLeft);
+    }
+  };
+
+  // Adicionar evento de scroll ao carrossel
+  useEffect(() => {
+    const carousel = carouselRef.current;
+    if (carousel) {
+      carousel.addEventListener("scroll", handleCarouselScroll);
+      // Verificar inicialmente se as setas devem ser mostradas
+      handleCarouselScroll();
+    }
+    return () => {
+      if (carousel) {
+        carousel.removeEventListener("scroll", handleCarouselScroll);
+      }
+    };
+  }, []);
+
+  // Funções para navegação do carrossel com botões
+  const scrollCarousel = (direction) => {
+    if (carouselRef.current) {
+      const scrollAmount = direction === "left" ? -150 : 150;
+      carouselRef.current.scrollBy({
+        left: scrollAmount,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  // Funções para controle de toque
+  const handleTouchStart = (e) => {
+    setTouchStart(e.targetTouches[0].clientX);
+    setIsDragging(true);
+  };
+
+  const handleTouchMove = (e) => {
+    if (!isDragging) return;
+    setTouchEnd(e.targetTouches[0].clientX);
+    
+    // Calcula a diferença e faz scroll em tempo real
+    const diff = touchStart - e.targetTouches[0].clientX;
+    if (carouselRef.current) {
+      carouselRef.current.scrollLeft += diff / 5; // Dividido por 5 para suavizar o movimento
+    }
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+    
+    // Se houve um swipe mais longo, podemos navegar para a próxima/anterior categoria
+    if (touchStart - touchEnd > 100) {
+      // Swipe para esquerda - próxima categoria
+      const currentIndex = categorias.indexOf(categoriaSelecionada);
+      if (currentIndex < categorias.length - 1) {
+        setCategoriaSelecionada(categorias[currentIndex + 1]);
+        scrollToCategory(currentIndex + 1);
+      }
+    } else if (touchEnd - touchStart > 100) {
+      // Swipe para direita - categoria anterior
+      const currentIndex = categorias.indexOf(categoriaSelecionada);
+      if (currentIndex > 0) {
+        setCategoriaSelecionada(categorias[currentIndex - 1]);
+        scrollToCategory(currentIndex - 1);
+      }
+    }
+  };
+
+  // Função para rolar até uma categoria específica
+  const scrollToCategory = (index) => {
+    if (carouselRef.current) {
+      const categoryButtons = carouselRef.current.querySelectorAll(".category-button");
+      if (categoryButtons[index]) {
+        const buttonLeft = categoryButtons[index].offsetLeft;
+        const containerWidth = carouselRef.current.clientWidth;
+        const buttonWidth = categoryButtons[index].clientWidth;
+        
+        // Centraliza o botão na viewport
+        carouselRef.current.scrollTo({
+          left: buttonLeft - containerWidth / 2 + buttonWidth / 2,
+          behavior: "smooth",
+        });
+      }
+    }
+  };
+
+  // Selecionar categoria
+  const handleCategoriaClick = (categoria, index) => {
+    setCategoriaSelecionada(categoria);
+    scrollToCategory(index);
+  };
 
   const abrirDetalhes = (item) => {
     setItemSelecionado(item);
@@ -226,18 +343,79 @@ const Cardapio = ({ adicionarAoCarrinho }) => {
 
   return (
     <div>
-      {/* Abas de navegação */}
-      <Tabs
-        value={categoriaSelecionada}
-        onChange={(e, novaCategoria) => setCategoriaSelecionada(novaCategoria)}
-        centered
-        textColor="secondary"
-        indicatorColor="secondary"
-      >
-        {Object.keys(cardapioItens).map((categoria) => (
-          <Tab key={categoria} label={categoria} value={categoria} />
-        ))}
-      </Tabs>
+      {/* Carrossel de categorias com botões de navegação */}
+      <Box sx={{ position: "relative", mb: 2 }}>
+        {showLeftArrow && (
+          <IconButton
+            onClick={() => scrollCarousel("left")}
+            sx={{
+              position: "absolute",
+              left: 0,
+              top: "50%",
+              transform: "translateY(-50%)",
+              zIndex: 2,
+              backgroundColor: "rgba(0,0,0,0.1)",
+              "&:hover": { backgroundColor: "rgba(0,0,0,0.2)" },
+            }}
+          >
+            <ArrowBackIosNewIcon fontSize="small" />
+          </IconButton>
+        )}
+        
+        <Box
+          ref={carouselRef}
+          sx={{
+            display: "flex",
+            overflowX: "scroll",
+            scrollBehavior: "smooth",
+            WebkitOverflowScrolling: "touch", // Para melhor comportamento no iOS
+            msOverflowStyle: "none", // IE e Edge
+            scrollbarWidth: "none", // Firefox
+            "&::-webkit-scrollbar": { display: "none" }, // Chrome e Safari
+            px: 5, // Espaço para os botões de navegação
+          }}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          {categorias.map((categoria, index) => (
+            <Button
+              key={categoria}
+              className="category-button"
+              onClick={() => handleCategoriaClick(categoria, index)}
+              variant={categoria === categoriaSelecionada ? "contained" : "outlined"}
+              color="secondary"
+              sx={{
+                mx: 0.5,
+                my: 1,
+                whiteSpace: "nowrap",
+                transition: "transform 0.2s, background-color 0.3s",
+                transform: categoria === categoriaSelecionada ? "scale(1.05)" : "scale(1)",
+                minWidth: "120px",
+              }}
+            >
+              {categoria}
+            </Button>
+          ))}
+        </Box>
+        
+        {showRightArrow && (
+          <IconButton
+            onClick={() => scrollCarousel("right")}
+            sx={{
+              position: "absolute",
+              right: 0,
+              top: "50%",
+              transform: "translateY(-50%)",
+              zIndex: 2,
+              backgroundColor: "rgba(0,0,0,0.1)",
+              "&:hover": { backgroundColor: "rgba(0,0,0,0.2)" },
+            }}
+          >
+            <ArrowForwardIosIcon fontSize="small" />
+          </IconButton>
+        )}
+      </Box>
 
       {/* Barra de pesquisa com ícone de lupa */}
       <TextField
@@ -246,7 +424,7 @@ const Cardapio = ({ adicionarAoCarrinho }) => {
         placeholder="Pesquisar itens..."
         value={termoPesquisa}
         onChange={(e) => setTermoPesquisa(e.target.value)}
-        sx={{ mt: 2, mb: 2 }}
+        sx={{ mb: 2 }}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">

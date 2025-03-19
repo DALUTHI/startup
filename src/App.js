@@ -23,6 +23,10 @@ import {
   Avatar,
   Card,
   CardContent,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
@@ -32,107 +36,17 @@ import StorefrontIcon from "@mui/icons-material/Storefront";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import PhoneIcon from "@mui/icons-material/Phone";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import Cardapio from "./Cardapio";
 import Cozinha from "./Cozinha";
 import "./App.css";
-
-// Create theme with enhanced dark mode styling
-const theme = createTheme({
-  palette: {
-    mode: "dark",
-    primary: { main: "#2D3748" }, // Dark blue-gray
-    secondary: { main: "#4A5568" }, // Medium blue-gray
-    background: { default: "#121212", paper: "#1A202C" }, // Darker background
-    text: { primary: "#F7FAFC", secondary: "#E2E8F0" }, // Lighter text
-    error: { main: "#F56565" },
-    success: { main: "#48BB78" },
-    info: { main: "#4299E1" },
-    warning: { main: "#ED8936" },
-  },
-  typography: {
-    fontFamily: "Poppins, sans-serif",
-    h3: { fontWeight: "700", letterSpacing: "-0.5px" },
-    h4: { fontWeight: "700", letterSpacing: "-0.5px" },
-    h5: { fontWeight: "600", letterSpacing: "-0.3px" },
-    h6: { fontWeight: "600", letterSpacing: "-0.3px" },
-    button: { fontWeight: "600", textTransform: "none" },
-    body1: { lineHeight: 1.6 },
-  },
-  shape: {
-    borderRadius: 12,
-  },
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          borderRadius: "10px",
-          padding: "10px 20px",
-          transition: "transform 0.2s, box-shadow 0.2s",
-          boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
-          "&:hover": {
-            transform: "translateY(-2px)",
-            boxShadow: "0 6px 10px rgba(0,0,0,0.2)",
-          },
-        },
-        containedPrimary: {
-          background: "linear-gradient(45deg, #2D3748 30%, #4A5568 90%)",
-        },
-      },
-    },
-    MuiPaper: {
-      styleOverrides: {
-        root: {
-          borderRadius: "16px",
-          boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
-        },
-      },
-    },
-    MuiCard: {
-      styleOverrides: {
-        root: {
-          overflow: "hidden",
-          background: "linear-gradient(145deg, #1E212B 0%, #171923 100%)",
-          borderRadius: "16px",
-        }
-      }
-    },
-    MuiList: {
-      styleOverrides: {
-        root: {
-          padding: 0,
-        }
-      }
-    },
-    MuiListItem: {
-      styleOverrides: {
-        root: {
-          borderRadius: "8px",
-          marginBottom: "8px",
-          transition: "background-color 0.2s",
-          "&:hover": {
-            backgroundColor: "rgba(255,255,255,0.05)",
-          },
-        }
-      }
-    },
-    MuiChip: {
-      styleOverrides: {
-        root: {
-          fontWeight: 500,
-        }
-      }
-    },
-    MuiTextField: {
-      styleOverrides: {
-        root: {
-          "& .MuiOutlinedInput-root": {
-            borderRadius: "10px",
-          }
-        }
-      }
-    },
-  },
-});
+import logoImage from './png/logolifebox.png';
+import storeImage from './png/lifebox.png';
 
 function App() {
   const [carrinho, setCarrinho] = useState([]);
@@ -142,6 +56,117 @@ function App() {
   const [carrinhoAberto, setCarrinhoAberto] = useState(false);
   const [observacoes, setObservacoes] = useState("");
   const [mesa, setMesa] = useState(1);
+  const [darkMode, setDarkMode] = useState(true);
+  const [enderecoAberto, setEnderecoAberto] = useState(false);
+  const [horarioAberto, setHorarioAberto] = useState(false);
+
+  // Create theme with dark/light mode styling
+  const theme = createTheme({
+    palette: {
+      mode: darkMode ? "dark" : "light",
+      primary: { main: darkMode ? "#121212" : "#FFFFFF" },
+      secondary: { main: darkMode ? "#212121" : "#F5F5F5" },
+      background: { 
+        default: darkMode ? "#000000" : "#FFFFFF", 
+        paper: darkMode ? "#0A0A0A" : "#FFFFFF" 
+      },
+      text: { 
+        primary: darkMode ? "#FFFFFF" : "#000000", 
+        secondary: darkMode ? "#E0E0E0" : "#424242" 
+      },
+      error: { main: "#F56565" },
+      success: { main: "#48BB78" },
+      info: { main: "#4299E1" },
+      warning: { main: "#ED8936" },
+    },
+    typography: {
+      fontFamily: "Poppins, sans-serif",
+      h3: { fontWeight: "700", letterSpacing: "-0.5px" },
+      h4: { fontWeight: "700", letterSpacing: "-0.5px" },
+      h5: { fontWeight: "600", letterSpacing: "-0.3px" },
+      h6: { fontWeight: "600", letterSpacing: "-0.3px" },
+      button: { fontWeight: "600", textTransform: "none" },
+      body1: { lineHeight: 1.6 },
+    },
+    shape: {
+      borderRadius: 12,
+    },
+    components: {
+      MuiButton: {
+        styleOverrides: {
+          root: {
+            borderRadius: "10px",
+            padding: "10px 20px",
+            transition: "transform 0.2s, box-shadow 0.2s",
+            boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+            "&:hover": {
+              transform: "translateY(-2px)",
+              boxShadow: "0 6px 10px rgba(0,0,0,0.2)",
+            },
+          },
+          containedPrimary: {
+            background: darkMode 
+              ? "linear-gradient(45deg, #121212 30%, #212121 90%)"
+              : "linear-gradient(45deg, #FFFFFF 30%, #F5F5F5 90%)",
+          },
+        },
+      },
+      MuiPaper: {
+        styleOverrides: {
+          root: {
+            borderRadius: "16px",
+            boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
+          },
+        },
+      },
+      MuiCard: {
+        styleOverrides: {
+          root: {
+            overflow: "hidden",
+            background: darkMode 
+              ? "linear-gradient(145deg, #0A0A0A 0%, #121212 100%)"
+              : "linear-gradient(145deg, #FFFFFF 0%, #FAFAFA 100%)",
+            borderRadius: "16px",
+          }
+        }
+      },
+      MuiList: {
+        styleOverrides: {
+          root: {
+            padding: 0,
+          }
+        }
+      },
+      MuiListItem: {
+        styleOverrides: {
+          root: {
+            borderRadius: "8px",
+            marginBottom: "8px",
+            transition: "background-color 0.2s",
+            "&:hover": {
+              backgroundColor: darkMode ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)",
+            },
+          }
+        }
+      },
+      MuiChip: {
+        styleOverrides: {
+          root: {
+            fontWeight: 500,
+          }
+        }
+      },
+      MuiTextField: {
+        styleOverrides: {
+          root: {
+            "& .MuiOutlinedInput-root": {
+              borderRadius: "10px",
+            }
+          }
+        }
+      },
+    },
+  });
 
   useEffect(() => {
     const newSocket = new WebSocket("ws://localhost:3001");
@@ -253,6 +278,10 @@ function App() {
     setCarrinhoAberto(!carrinhoAberto);
   };
 
+  const toggleTheme = () => {
+    setDarkMode(!darkMode);
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -264,8 +293,15 @@ function App() {
               <>
                 {/* AppBar */}
                 <AppBar position="fixed" sx={{ 
-                  background: "linear-gradient(90deg, #1A202C 0%, #2D3748 100%)",
+                  background: darkMode 
+                    ? "linear-gradient(90deg, #000000 0%, #121212 100%)"
+                    : "linear-gradient(90deg, #FFFFFF 0%, #F5F5F5 100%)",
                   boxShadow: "0 2px 10px rgba(0,0,0,0.2)",
+                  top: "10px", // Move a barra para baixo
+                  width: "94%", // Reduz a largura para 94%
+                  left: "3%", // Centraliza horizontalmente
+                  right: "3%",
+                  borderRadius: "12px"
                 }}>
                   <Toolbar>
                     <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
@@ -275,6 +311,13 @@ function App() {
                       </Typography>
                     </Box>
                     <Box sx={{ display: "flex", alignItems: "center" }}>
+                      <IconButton 
+                        color="inherit" 
+                        onClick={toggleTheme}
+                        sx={{ mr: 2 }}
+                      >
+                        {darkMode ? <LightModeIcon /> : <DarkModeIcon />}
+                      </IconButton>
                       <Badge badgeContent={carrinho.length} color="error">
                         <IconButton 
                           color="inherit" 
@@ -297,9 +340,121 @@ function App() {
                     pt: 8, 
                     pb: 2, 
                     minHeight: "100vh",
-                    background: "linear-gradient(135deg, #121212 0%, #1A202C 100%)",
+                    background: darkMode 
+                      ? "linear-gradient(135deg, #000000 0%, #0A0A0A 100%)"
+                      : "linear-gradient(135deg, #FFFFFF 0%, #F8F8F8 100%)",
                   }}
                 >
+                  {/* Company Photo and Logo Section */}
+                  <Container maxWidth="md" sx={{ pt: 2, pb: 0 }}>
+                    <Box 
+                      sx={{ 
+                        position: "relative",
+                        height: 180,
+                        mb: 4,
+                        borderRadius: "16px",
+                        overflow: "hidden",
+                        boxShadow: "0 6px 20px rgba(0,0,0,0.25)",
+                        
+                      }}
+                    >
+                      {/* Background Image for Physical Store */}
+                      <Box 
+                        sx={{ 
+                          width: "100%",
+                          height: "100%",
+                          backgroundColor: "#000000", // Placeholder color
+                          backgroundImage: `url(${storeImage})`, // Replace with your image path
+                          backgroundSize: "cover",
+                          backgroundPosition: "center",
+                          filter: "brightness(0.7)"
+                        }}
+                      />
+                      
+                      {/* Circular Logo */}
+                      <Box 
+                        sx={{ 
+                          position: "absolute",
+                          bottom: 20,
+                          left: "13%",
+                          transform: "translateX(-50%)",
+                          width: 80,
+                          height: 80,
+                          borderRadius: "50%",
+                          backgroundColor: darkMode ? "#0A0A0A" : "#FFFFFF",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+                          border: `3px solid ${darkMode ? "#0A0A0A" : "#FFFFFF"}`,
+                          overflow: "hidden"
+                        }}
+                      >
+                        <img 
+                          src={logoImage} // Replace with your logo path
+                          alt="Company Logo"
+                          style={{ 
+                            width: "100%", 
+                            height: "100%", 
+                            objectFit: "cover" 
+                          }} 
+                        />  
+                      </Box>
+                      
+                      {/* Botões de contato */}
+                      <Box 
+                        sx={{ 
+                          position: "absolute",
+                          bottom: 20,
+                          right: 20,
+                          display: "flex",
+                          gap: 1
+                        }}
+                      >
+                        <IconButton 
+                          sx={{ 
+                            backgroundColor: "rgba(255,255,255,0.8)", 
+                            color: "#000000",
+                            "&:hover": { backgroundColor: "rgba(255,255,255,0.9)" }
+                          }}
+                          onClick={() => window.open("tel:+550000000000")}
+                        >
+                          <PhoneIcon />
+                        </IconButton>
+                        <IconButton 
+                          sx={{ 
+                            backgroundColor: "rgba(255,255,255,0.8)", 
+                            color: "#25D366",
+                            "&:hover": { backgroundColor: "rgba(255,255,255,0.9)" }
+                          }}
+                          onClick={() => window.open("https://wa.me/550000000000")}
+                        >
+                          <WhatsAppIcon />
+                        </IconButton>
+                        <IconButton 
+                          sx={{ 
+                            backgroundColor: "rgba(255,255,255,0.8)", 
+                            color: "#FF4136",
+                            "&:hover": { backgroundColor: "rgba(255,255,255,0.9)" }
+                          }}
+                          onClick={() => setEnderecoAberto(true)}
+                        >
+                          <LocationOnIcon />
+                        </IconButton>
+                        <IconButton 
+                          sx={{ 
+                            backgroundColor: "rgba(255,255,255,0.8)", 
+                            color: "#0074D9",
+                            "&:hover": { backgroundColor: "rgba(255,255,255,0.9)" }
+                          }}
+                          onClick={() => setHorarioAberto(true)}
+                        >
+                          <AccessTimeIcon />
+                        </IconButton>
+                      </Box>
+                    </Box>
+                  </Container>
+
                   <Container maxWidth="md" sx={{ py: 2 }}>
                     <Card elevation={3} sx={{ mb: 2, position: "relative", overflow: "visible" }}>
                       <Box 
@@ -309,7 +464,7 @@ function App() {
                           left: "50%", 
                           transform: "translateX(-50%)",
                           backgroundColor: "#ED8936",
-                          color: "#1A202C",
+                          color: "#000000",
                           px: 2,
                           py: 0.5,
                           borderRadius: "8px",
@@ -321,10 +476,10 @@ function App() {
                         Mesa #{mesa}
                       </Box>
                       <CardContent sx={{ pt: 4 }}>
-                        <Typography variant="h4" gutterBottom align="center" sx={{ color: "#F7FAFC" }}>
+                        <Typography variant="h4" gutterBottom align="center" sx={{ color: darkMode ? "#FFFFFF" : "#000000" }}>
                           Cardápio Digital
                         </Typography>
-                        <Typography variant="body1" paragraph align="center" sx={{ color: "#E2E8F0", mb: 3 }}>
+                        <Typography variant="body1" paragraph align="center" sx={{ color: darkMode ? "#E0E0E0" : "#424242", mb: 3 }}>
                           Escolha seus pratos e envie seu pedido diretamente para a cozinha!
                         </Typography>
                         <Cardapio adicionarAoCarrinho={adicionarAoCarrinho} />
@@ -341,7 +496,9 @@ function App() {
                   sx={{
                     '& .MuiDrawer-paper': { 
                       width: { xs: "100%", sm: "400px" }, 
-                      background: "linear-gradient(135deg, #1A202C 0%, #161B25 100%)",
+                      background: darkMode 
+                        ? "linear-gradient(135deg, #000000 0%, #0A0A0A 100%)"
+                        : "linear-gradient(135deg, #FFFFFF 0%, #F5F5F5 100%)",
                       p: 2
                     },
                   }}
@@ -362,8 +519,17 @@ function App() {
                   
                   {carrinho.length === 0 ? (
                     <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mt: 4 }}>
-                      <Avatar sx={{ width: 80, height: 80, mb: 2, backgroundColor: "rgba(255,255,255,0.1)" }}>
-                        <ShoppingCartIcon sx={{ width: 40, height: 40, color: "rgba(255,255,255,0.5)" }} />
+                      <Avatar sx={{ 
+                        width: 80, 
+                        height: 80, 
+                        mb: 2, 
+                        backgroundColor: darkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)" 
+                      }}>
+                        <ShoppingCartIcon sx={{ 
+                          width: 40, 
+                          height: 40, 
+                          color: darkMode ? "rgba(255,255,255,0.5)" : "rgba(0,0,0,0.5)" 
+                        }} />
                       </Avatar>
                       <Typography variant="h6" gutterBottom>
                         Seu carrinho está vazio
@@ -408,7 +574,7 @@ function App() {
                                       mr: 1, 
                                       mb: 1, 
                                       backgroundColor: "rgba(244, 67, 54, 0.2)", 
-                                      color: "#fff",
+                                      color: darkMode ? "#FFFFFF" : "#000000",
                                       fontSize: "0.7rem"
                                     }} 
                                   />
@@ -425,7 +591,7 @@ function App() {
                                           mr: 1, 
                                           mb: 1, 
                                           backgroundColor: "rgba(66, 153, 225, 0.2)", 
-                                          color: "#fff",
+                                          color: darkMode ? "#FFFFFF" : "#000000",
                                           fontSize: "0.7rem"
                                         }} 
                                       />
@@ -439,7 +605,7 @@ function App() {
                                   <IconButton 
                                     size="small" 
                                     onClick={() => alterarQuantidade(index, -1)}
-                                    sx={{ backgroundColor: "rgba(255,255,255,0.05)" }}
+                                    sx={{ backgroundColor: darkMode ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)" }}
                                   >
                                     <RemoveIcon fontSize="small" />
                                   </IconButton>
@@ -449,7 +615,7 @@ function App() {
                                   <IconButton 
                                     size="small"
                                     onClick={() => alterarQuantidade(index, 1)}
-                                    sx={{ backgroundColor: "rgba(255,255,255,0.05)" }}
+                                    sx={{ backgroundColor: darkMode ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)" }}
                                   >
                                     <AddIcon fontSize="small" />
                                   </IconButton>
@@ -474,7 +640,7 @@ function App() {
                           sx={{ mb: 2 }}
                           InputProps={{ 
                             inputProps: { min: 1 },
-                            style: { color: "#E2E8F0" } 
+                            style: { color: darkMode ? "#FFFFFF" : "#000000" } 
                           }}
                         />
                         
@@ -487,13 +653,13 @@ function App() {
                           value={observacoes}
                           onChange={(e) => setObservacoes(e.target.value)}
                           sx={{ mb: 2 }}
-                          InputProps={{ style: { color: "#E2E8F0" } }}
+                          InputProps={{ style: { color: darkMode ? "#FFFFFF" : "#000000" } }}
                         />
                         
                         <Box 
                           sx={{ 
                             p: 2, 
-                            backgroundColor: 'rgba(255,255,255,0.05)',
+                            backgroundColor: darkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)',
                             borderRadius: '10px',
                             display: 'flex',
                             justifyContent: 'space-between',
@@ -525,6 +691,96 @@ function App() {
                     </>
                   )}
                 </Drawer>
+
+                {/* Pop-up de Endereço */}
+                <Dialog
+                  open={enderecoAberto}
+                  onClose={() => setEnderecoAberto(false)}
+                  PaperProps={{
+                    sx: {
+                      borderRadius: "16px",
+                      p: 2,
+                      background: darkMode ? "#121212" : "#FFFFFF"
+                    }
+                  }}
+                >
+                  <DialogTitle>
+                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                      <LocationOnIcon sx={{ mr: 1, color: "#FF4136" }} />
+                      <Typography variant="h6">Nosso Endereço</Typography>
+                    </Box>
+                  </DialogTitle>
+                  <DialogContent>
+                    <Typography variant="body1" sx={{ mb: 2 }}>
+                      Rua Exemplo, 123 - Centro
+                    </Typography>
+                    <Typography variant="body1">
+                      Cidade - Estado, CEP 12345-678
+                    </Typography>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button 
+                      onClick={() => setEnderecoAberto(false)}
+                      sx={{ 
+                        background: darkMode ? "#212121" : "#F5F5F5",
+                        color: darkMode ? "#FFFFFF" : "#000000"
+                      }}
+                    >
+                      Fechar
+                    </Button>
+                    <Button 
+                      onClick={() => window.open("https://maps.google.com/?q=Rua+Exemplo+123")}
+                      sx={{ 
+                        background: "linear-gradient(45deg, #FF4136 30%, #FF851B 90%)",
+                        color: "#FFFFFF"
+                      }}
+                    >
+                      Ver no Mapa
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+
+                {/* Pop-up de Horário */}
+                <Dialog
+                  open={horarioAberto}
+                  onClose={() => setHorarioAberto(false)}
+                  PaperProps={{
+                    sx: {
+                      borderRadius: "16px",
+                      p: 2,
+                      background: darkMode ? "#121212" : "#FFFFFF"
+                    }
+                  }}
+                >
+                  <DialogTitle>
+                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                      <AccessTimeIcon sx={{ mr: 1, color: "#0074D9" }} />
+                      <Typography variant="h6">Horário de Funcionamento</Typography>
+                    </Box>
+                  </DialogTitle>
+                  <DialogContent>
+                    <Typography variant="body1" sx={{ mb: 1 }}>
+                      <strong>Segunda a Sexta:</strong> 10:00 - 22:00
+                    </Typography>
+                    <Typography variant="body1" sx={{ mb: 1 }}>
+                      <strong>Sábados:</strong> 10:00 - 23:00
+                    </Typography>
+                    <Typography variant="body1">
+                      <strong>Domingos e Feriados:</strong> 11:00 - 20:00
+                    </Typography>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button 
+                      onClick={() => setHorarioAberto(false)}
+                      sx={{ 
+                        background: darkMode ? "#212121" : "#F5F5F5",
+                        color: darkMode ? "#FFFFFF" : "#000000"
+                      }}
+                    >
+                      Fechar
+                    </Button>
+                  </DialogActions>
+                </Dialog>
               </>
             }
           />
@@ -543,7 +799,7 @@ function App() {
         }
         sx={{
           "& .MuiSnackbarContent-root": { 
-            backgroundColor: "#1A202C", 
+            backgroundColor: darkMode ? "#000000" : "#FFFFFF", 
             borderLeft: "4px solid #48BB78",
             boxShadow: "0 4px 12px rgba(0,0,0,0.3)"
           },
