@@ -108,9 +108,11 @@ function App() {
             background: darkMode 
               ? "linear-gradient(45deg, #121212 30%, #212121 90%)"
               : "linear-gradient(45deg, #FFFFFF 30%, #F5F5F5 90%)",
+            color: darkMode ? "#FFFFFF" : "#000000", // Adiciona cor do texto
           },
         },
       },
+      
       MuiPaper: {
         styleOverrides: {
           root: {
@@ -542,7 +544,9 @@ function App() {
                         onClick={() => setCarrinhoAberto(false)}
                         sx={{ mt: 2 }}
                       >
-                        Explorar Cardápio
+                      <Typography sx={{ color: theme.palette.mode === 'dark' ? 'white' : 'black' }}>
+                       Explorar Cardápio
+                       </Typography>
                       </Button>
                     </Box>
                   ) : (
@@ -794,7 +798,7 @@ function App() {
         message={
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <CheckCircleIcon sx={{ mr: 1, color: "#48BB78" }} />
-            <Typography>Pedido enviado com sucesso!</Typography>
+            <Typography sx={{ color: theme.palette.mode === 'dark' ? 'white' : 'black' }}>Pedido enviado com sucesso!</Typography>           
           </Box>
         }
         sx={{

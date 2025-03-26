@@ -560,14 +560,15 @@ const Cardapio = ({ adicionarAoCarrinho }) => {
             
             {/* Mostrar preço total do item */}
             <Box sx={{ mt: 2, p: 2, backgroundColor: '#333', borderRadius: '8px', width: '100%' }}>
-              <Typography variant="h6" align="center">
-                Total: R$ {precoTotal.toFixed(2)}
-              </Typography>
+            <Typography variant="h6" align="center" color="white">
+            Total: R$ {precoTotal.toFixed(2)}
+           </Typography>
+
             </Box>
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={fecharDetalhes} color="primary">
+          <Button onClick={fecharDetalhes} color="red">
             Cancelar
           </Button>
           <Button

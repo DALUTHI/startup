@@ -89,7 +89,7 @@ const Cozinha = () => {
                     icon={pedido.status === "Em preparo" ? null : <CheckCircleIcon />}
                   />
                 </Box>
-             <List>
+                <List>
                   {pedido.itens.map((item, i) => (
                     <ListItem key={i} sx={{ pl: 0 }}>
                       <ListItemIcon>
@@ -97,13 +97,23 @@ const Cozinha = () => {
                       </ListItemIcon>
                       <ListItemText
                         primary={`${item.nome} - ${item.quantidade}`}
-                        secondary={item.ingrediente ? `Sem ${item.ingrediente}` : "Sem alterações"}
                         primaryTypographyProps={{ sx: { color: "white" } }}
-                        secondaryTypographyProps={{ sx: { color: "white" } }}                        
+                        secondaryTypographyProps={{ sx: { color: "white" } }}
                       />
                     </ListItem>
                   ))}
                 </List>
+                {/* Seção de Observações */}
+                {pedido.observacoes && (
+                  <Box sx={{ mt: 1, borderTop: '1px solid #555', pt: 1 }}>
+                    <Typography 
+                      variant="body2" 
+                      sx={{ color: '#ffb74d', fontStyle: 'italic', fontSize: '0.9rem' }}
+                    >
+                      <strong>Observações:</strong> {pedido.observacoes}
+                    </Typography>
+                  </Box>
+                )}
                 {pedido.status === "Em preparo" && (
                   <Box sx={{ textAlign: "right", mt: 2 }}>
                     <Button
