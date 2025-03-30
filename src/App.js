@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import QrCodeGenerator from "./QrCodeGenerator"; 
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import {
   CssBaseline,
@@ -49,13 +50,15 @@ import logoImage from './png/logolifebox.png';
 import storeImage from './png/lifebox.png';
 
 function App() {
+
+  const queryParams = new URLSearchParams(window.location.search);
+  const mesa = parseInt(queryParams.get('mesa')) || 1;
   const [carrinho, setCarrinho] = useState([]);
   const [pedidoConfirmado, setPedidoConfirmado] = useState(false);
   const [ingrediente, setIngrediente] = useState("");
   const [socket, setSocket] = useState(null);
   const [carrinhoAberto, setCarrinhoAberto] = useState(false);
   const [observacoes, setObservacoes] = useState("");
-  const [mesa, setMesa] = useState(1);
   const [darkMode, setDarkMode] = useState(true);
   const [enderecoAberto, setEnderecoAberto] = useState(false);
   const [horarioAberto, setHorarioAberto] = useState(false);
@@ -284,8 +287,19 @@ function App() {
     setDarkMode(!darkMode);
   };
 
+ 
+
+
   return (
+   
+     
     <ThemeProvider theme={theme}>
+       <div>
+          <h1>QR Code para Mesas</h1>
+          <QrCodeGenerator numeroMesa={1} />
+          <QrCodeGenerator numeroMesa={2} />
+          <QrCodeGenerator numeroMesa={3} />
+        </div>
       <CssBaseline />
       <Router>
         <Routes>
@@ -634,20 +648,7 @@ function App() {
                       </List>
 
                       <Box sx={{ mt: "auto" }}>
-                        <TextField
-                          label="Mesa"
-                          type="number"
-                          variant="outlined"
-                          fullWidth
-                          value={mesa}
-                          onChange={(e) => setMesa(Math.max(1, parseInt(e.target.value) || 1))}
-                          sx={{ mb: 2 }}
-                          InputProps={{ 
-                            inputProps: { min: 1 },
-                            style: { color: darkMode ? "#FFFFFF" : "#000000" } 
-                          }}
-                        />
-                        
+                  
                         <TextField
                           label="Observações para o pedido"
                           variant="outlined"

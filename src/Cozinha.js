@@ -14,6 +14,7 @@ import LocalDiningIcon from "@mui/icons-material/LocalDining";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { styled, keyframes } from "@mui/system";
+import { useSearchParams } from "react-router-dom";
 
 // Animação para novos pedidos
 const fadeIn = keyframes`
@@ -27,6 +28,8 @@ const AnimatedListItem = styled(ListItem)(({ theme }) => ({
 
 const Cozinha = () => {
   const [pedidos, setPedidos] = useState([]);
+  const [searchParams] = useSearchParams();
+  const mesaSelecionada = searchParams.get("mesa");
 
   useEffect(() => {
     const socket = new WebSocket("ws://localhost:3001"); // Substitua pelo seu servidor WebSocket
@@ -38,6 +41,11 @@ const Cozinha = () => {
 
     return () => socket.close();
   }, []);
+
+  // Filtrar apenas os pedidos da mesa especificada na URL
+  const pedidosMesa = mesaSelecionada
+    ? pedidos.filter((pedido) => pedido.mesa === Number(mesaSelecionada))
+    : pedidos;
 
   const marcarComoPronto = (index) => {
     setPedidos((prevPedidos) =>
@@ -59,15 +67,15 @@ const Cozinha = () => {
     >
       <Typography variant="h4" gutterBottom sx={{ fontWeight: "bold", color: "#ffb74d" }}>
         <RestaurantIcon sx={{ verticalAlign: "middle", mr: 1 }} />
-        Pedidos na Cozinha
+        Pedidos na Cozinha {mesaSelecionada ? `- Mesa ${mesaSelecionada}` : ""}
       </Typography>
-      {pedidos.length === 0 ? (
+      {pedidosMesa.length === 0 ? (
         <Typography variant="body1" color="textSecondary">
           Nenhum pedido no momento.
         </Typography>
       ) : (
         <List>
-          {pedidos.map((pedido, index) => (
+          {pedidosMesa.map((pedido, index) => (
             <AnimatedListItem key={index}>
               <Paper
                 elevation={3}
@@ -98,7 +106,6 @@ const Cozinha = () => {
                       <ListItemText
                         primary={`${item.nome} - ${item.quantidade}`}
                         primaryTypographyProps={{ sx: { color: "white" } }}
-                        secondaryTypographyProps={{ sx: { color: "white" } }}
                       />
                     </ListItem>
                   ))}
