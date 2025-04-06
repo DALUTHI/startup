@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import QrCodeGenerator from "./QrCodeGenerator"; 
+import QrCodePage from "./QrCodePage";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import {
   CssBaseline,
@@ -294,12 +295,7 @@ function App() {
    
      
     <ThemeProvider theme={theme}>
-       <div>
-          <h1>QR Code para Mesas</h1>
-          <QrCodeGenerator numeroMesa={1} />
-          <QrCodeGenerator numeroMesa={2} />
-          <QrCodeGenerator numeroMesa={3} />
-        </div>
+     
       <CssBaseline />
       <Router>
         <Routes>
@@ -790,6 +786,7 @@ function App() {
             }
           />
           <Route path="/cozinha" element={<Cozinha />} />
+          <Route path="/qrcodes" element={<QrCodePage />} />
         </Routes>
       </Router>
       <Snackbar
