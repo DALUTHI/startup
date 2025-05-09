@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import QrCodeGenerator from "./QrCodeGenerator"; 
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import {
   CssBaseline,
@@ -275,12 +274,7 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <div>
-        <h1>QR Code para Mesas</h1>
-        <QrCodeGenerator numeroMesa={1} />
-        <QrCodeGenerator numeroMesa={2} />
-        <QrCodeGenerator numeroMesa={3} />
-      </div>
+    
       <CssBaseline />
       <Router>
         <Routes>
@@ -701,14 +695,20 @@ function App() {
                         />
                         
                         <TextField
-                          label="Telefone"
-                          variant="outlined"
-                          fullWidth
-                          name="telefone"
-                          value={dadosCliente.telefone}
-                          onChange={handleDadosClienteChange}
-                          sx={{ mb: 2 }}
-                        />
+  label="Telefone"
+  variant="outlined"
+  fullWidth
+  name="telefone"
+  value={dadosCliente.telefone}
+  onChange={handleDadosClienteChange}
+  error={dadosCliente.telefone !== "" && !/^\(\d{2}\)\s?\d{5}-\d{4}$/.test(dadosCliente.telefone)}
+  helperText={
+    dadosCliente.telefone !== "" && !/^\(\d{2}\)\s?\d{5}-\d{4}$/.test(dadosCliente.telefone)
+      ? "Digite no formato (DD) 91234-5678"
+      : ""
+  }
+/>
+
                       </Box>
                       
                       <Box sx={{ mb: 3 }}>
@@ -763,7 +763,14 @@ function App() {
                         fullWidth 
                         size="large"
                         onClick={finalizarPedido}
-                        disabled={!dadosCliente.nome || !dadosCliente.telefone || !dadosCliente.rua || !dadosCliente.numero || !dadosCliente.setor}
+                        disabled={
+                       !dadosCliente.nome ||
+                       !dadosCliente.telefone ||
+                       !/^\(\d{2}\)\s?\d{5}-\d{4}$/.test(dadosCliente.telefone) ||  // <- validação de formato
+                       !dadosCliente.rua ||
+                       !dadosCliente.numero ||
+                       !dadosCliente.setor
+                        }
                         sx={{ 
                           py: 1.5,
                           background: "linear-gradient(45deg, #48BB78 30%, #38A169 90%)",
@@ -880,27 +887,9 @@ function App() {
               </>
             }
           />
-          <Route path="/cozinha" element={<Cozinha />} />
+          <Route path="/cozinha123" element={<Cozinha />} />
         </Routes>
       </Router>
-      <Snackbar
-        open={pedidoConfirmado}
-        autoHideDuration={4000}
-        onClose={() => setPedidoConfirmado(false)}
-        message={
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <CheckCircleIcon sx={{ mr: 1, color: "#48BB78" }} />
-            <Typography>Pedido enviado com sucesso!</Typography>           
-          </Box>
-        }
-        sx={{
-          "& .MuiSnackbarContent-root": { 
-            backgroundColor: darkMode ? "#000000" : "#FFFFFF", 
-            borderLeft: "4px solid #48BB78",
-            boxShadow: "0 4px 12px rgba(0,0,0,0.3)"
-          },
-        }}
-      />
     </ThemeProvider>
   );
 }
