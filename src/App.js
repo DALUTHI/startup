@@ -143,14 +143,16 @@ function App() {
     },
   });
 
-  useEffect(() => {
-    const newSocket = new WebSocket("ws://localhost:3001");
-    newSocket.onopen = () => console.log("Conexão WebSocket estabelecida!");
-    newSocket.onerror = (error) => console.error("Erro WebSocket:", error);
-    newSocket.onmessage = (event) => console.log("Recebido:", event.data);
-    setSocket(newSocket);
-    return () => newSocket.close();
-  }, []);
+ useEffect(() => {
+  const socket = new WebSocket("wss://startup-vuxu.onrender.com");
+  socket.onopen = () => console.log("Conexão WebSocket estabelecida!");
+  socket.onerror = (error) => console.error("Erro WebSocket:", error);
+  socket.onmessage = (event) => console.log("Recebido:", event.data);
+  setSocket(socket);
+  
+  return () => socket.close();
+}, []);
+
 
   const adicionarAoCarrinho = (item) => {
     const itemIndex = carrinho.findIndex(
