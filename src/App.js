@@ -144,7 +144,7 @@ function App() {
   });
 
   useEffect(() => {
-    const socket = new WebSocket("wss://startup-vuxu.onrender.com");
+    const newSocket = new WebSocket("ws://localhost:3001");
     newSocket.onopen = () => console.log("Conexão WebSocket estabelecida!");
     newSocket.onerror = (error) => console.error("Erro WebSocket:", error);
     newSocket.onmessage = (event) => console.log("Recebido:", event.data);
