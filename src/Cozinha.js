@@ -31,7 +31,7 @@ const Cozinha = () => {
   const mesaSelecionada = searchParams.get("mesa");
 
   useEffect(() => {
-    const socket = new WebSocket("ws://localhost:3001");
+    const socket = new WebSocket("wss://startup-vuxu.onrender.com");
 
     socket.onmessage = (event) => {
       const novoPedido = JSON.parse(event.data);
