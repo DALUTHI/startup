@@ -144,6 +144,8 @@ const cardapioItens = {
 };
 
 const Cardapio = ({ adicionarAoCarrinho }) => {
+  const theme = useTheme();
+  const darkMode = theme.palette.mode === 'dark';
   const categorias = Object.keys(cardapioItens);
   const [categoriaSelecionada, setCategoriaSelecionada] = useState(categorias[0]);
   const [detalhesAberto, setDetalhesAberto] = useState(false);
@@ -402,14 +404,15 @@ const Cardapio = ({ adicionarAoCarrinho }) => {
         {showRightArrow && (
           <IconButton
             onClick={() => scrollCarousel("right")}
-            sx={{
-              position: "absolute",
-              right: 0,
-              top: "50%",
-              transform: "translateY(-50%)",
-              zIndex: 2,
-              backgroundColor: "rgba(0,0,0,0.1)",
-              "&:hover": { backgroundColor: "rgba(0,0,0,0.2)" },
+              sx={{
+              mx: 0.5,
+              my: 1,
+              whiteSpace: "nowrap",
+              background: darkMode ? "#DCDCDC" : "#1C1C1C",
+              color: darkMode ? "#1C1C1C" : "#DCDCDC", // <-- Agora está dentro do sx!
+              transition: "transform 0.2s",
+              transform: categoria === categoriaSelecionada ? "scale(1.05)" : "scale(1)",
+              minWidth: "120px",
             }}
           >
             <ArrowForwardIosIcon fontSize="small" />
