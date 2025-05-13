@@ -1,4 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import { useTheme } from '@mui/material/styles';
 import {
   Typography,
   Grid,
@@ -36,6 +39,7 @@ import bruschetta from "./png/bruschetta.jpg";
 import bolinho from "./png/bolinho.jpg";
 import sorvete from "./png/sorvete.jpg";
 import brownie from "./png/brownie.jpg";
+
 
 // Mapeamento dos itens com suas imagens correspondentes
 const imagensItens = {
@@ -145,7 +149,7 @@ const cardapioItens = {
 
 const Cardapio = ({ adicionarAoCarrinho }) => {
   const theme = useTheme();
-  const darkMode = theme.palette.mode === 'dark';
+const darkMode = theme.palette.mode === 'dark';
   const categorias = Object.keys(cardapioItens);
   const [categoriaSelecionada, setCategoriaSelecionada] = useState(categorias[0]);
   const [detalhesAberto, setDetalhesAberto] = useState(false);
@@ -387,14 +391,16 @@ const Cardapio = ({ adicionarAoCarrinho }) => {
               onClick={() => handleCategoriaClick(categoria, index)}
               variant={categoria === categoriaSelecionada ? "contained" : "outlined"}
               color="secondary"
-              sx={{
-                mx: 0.5,
-                my: 1,
-                whiteSpace: "nowrap",
-                transition: "transform 0.2s, background-color 0.3s",
-                transform: categoria === categoriaSelecionada ? "scale(1.05)" : "scale(1)",
-                minWidth: "120px",
-              }}
+               sx={{
+              mx: 0.5,
+              my: 1,
+              whiteSpace: "nowrap",
+              background: darkMode ? "#DCDCDC" : "#1C1C1C",
+              color: darkMode ? "#1C1C1C" : "#DCDCDC", // <-- Agora está dentro do sx!
+              transition: "transform 0.2s",
+              transform: categoria === categoriaSelecionada ? "scale(1.05)" : "scale(1)",
+              minWidth: "120px",
+            }}
             >
               {categoria}
             </Button>
@@ -404,15 +410,14 @@ const Cardapio = ({ adicionarAoCarrinho }) => {
         {showRightArrow && (
           <IconButton
             onClick={() => scrollCarousel("right")}
-              sx={{
-              mx: 0.5,
-              my: 1,
-              whiteSpace: "nowrap",
-              background: darkMode ? "#DCDCDC" : "#1C1C1C",
-              color: darkMode ? "#1C1C1C" : "#DCDCDC", // <-- Agora está dentro do sx!
-              transition: "transform 0.2s",
-              transform: categoria === categoriaSelecionada ? "scale(1.05)" : "scale(1)",
-              minWidth: "120px",
+            sx={{
+              position: "absolute",
+              right: 0,
+              top: "50%",
+              transform: "translateY(-50%)",
+              zIndex: 2,
+              backgroundColor: "rgba(0,0,0,0.1)",
+              "&:hover": { backgroundColor: "rgba(0,0,0,0.2)" },
             }}
           >
             <ArrowForwardIosIcon fontSize="small" />
